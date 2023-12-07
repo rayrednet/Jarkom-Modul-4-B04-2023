@@ -30,6 +30,7 @@ Hal yang perlu diperhatikan
     - Tidak bisa menjelaskan cara perhitungan VLSM dan CIDR
 
 ## Jawab
+Untuk penjelasan pengerjaan praktikum ini adapun video demonstrasi di [link berikut](https://youtu.be/X3RqggdkLOY)
 
 ### A. Subnetting
 Pertama-tama, kita harus melakukan subnetting pada topologi yang ada pada soal menggunakan metode classful. Berikut ini adalah tabel class yang terdapat di dalam metode Classful:
