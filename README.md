@@ -4,6 +4,19 @@
 | -------------------------------------|------------|
 | Rayssa Ravelia                       | 5025211219 |
 
+### Daftar Isi
+- [Soal](#soal) <br/>
+- [Jawaban](#jawab) <br/>
+    - [a. Subnetting](#a-subnetting)
+    - [b. Perhitungan IP](#b-perhitungan-ip)
+        - [Metode 1: VLSM](#b1-metode-1-variable-length-subnet-masking-vlsm)
+        - [Metode 2: CIDR](#b2-metode-2-classless-inter-domain-routing-cidr)
+    - [c. Implementasi pembagian IP](#c-implementasi-pembagian-ip)
+        - [VLSM di GNS3](#c1-konfigurasi-ip-vlsm-di-gns3)
+        - [CIDR di CPT](#c2-konfigurasi-ip-cidr-di-cisco-packet-tracer)
+    - [d. Routing IP](#d-routing-ip)
+        - [Routing VLSM di GNS3](#d1-routing-ip-vlsm-di-gns3)
+        - [Routing CIDR di CPT](#d2-routing-ip-cidr-di-cisco-packet-tracer)
 
 ## Soal
 ![topologi soal](./img/topologi.png)
@@ -31,6 +44,8 @@ Hal yang perlu diperhatikan
 
 ## Jawab
 Untuk penjelasan pengerjaan praktikum ini adapun video demonstrasi di [link berikut](https://youtu.be/X3RqggdkLOY)
+
+
 
 ### A. Subnetting
 Pertama-tama, kita harus melakukan subnetting pada topologi yang ada pada soal menggunakan metode classful. Berikut ini adalah tabel class yang terdapat di dalam metode Classful:
@@ -1177,3 +1192,6 @@ Berikut ini adalah beberapa testing yang dilakukan untuk mengecek routing berhas
 - ping PC/Server ke router jauh  <br />
     PC LaubHills ke Router Lugner
     ![ping cross far](./img/pingCIDRcrossFar.png)
+
+### Kendala
+Pada saat pengerjaan terdapat salah hitung IP dalam metode CIDR, sehingga harus membuat kembali dari awal (avalanche effect 😀)
