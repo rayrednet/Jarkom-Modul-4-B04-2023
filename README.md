@@ -882,12 +882,297 @@ Selanjutnya, implementasikan IP address sesuai dengan gambar di atas. Berikut in
  
 #### C.2.1. Konfigurasi IP pada Router
 Berikut ini adalah langkah-langkah untuk konfigurasi IP di Router:
-1. Pilih router yang ingin dilakukan konfigurasi
+1. Pilih router yang ingin dilakukan konfigurasi <br />
+    Pastikan router sudah menyala, dengan masuk ke bagian "Physical" dan klik tombol power yang ada.
+    ![step0-cpt](./img/cpt-0.png)
 2. Masuk ke bagian "Config"
     ![step1-cpt](./img/cpt-1.png)
 3. Pilih bagian "INTERFACE" yang ingin dilakukan konfigurasi
-![step2-cpt](image.png)
+    ![step2-cpt](./img/cpt-2.png)
+4. Lakukan konfiugasi IP <br />
+Pastikan "Port Status" menyala jika interface ingin dilakukan konfigurasi. Isi IPv4 Address sesuai dengan address yang telah ditetapkan, dan isi Subnet Masuk sesuai dengan tabel 16 yang sesuai dengan subnet namenya.
 
-#### C.2.1. Konfigurasi IP pada PC / Server
+#### C.2.1. Konfigurasi IP pada PC/Server
+Berikut ini adalah langkah-langkah untuk konfigurasi IP di PC/Server:
+1. Pilih PC/server yang ingin dilakukan konfigurasi <br />
+    Pastikan PC/server sudah menyala, dengan masuk ke bagian "Physical" dan klik tombol power yang ada.
+   ![step0-cpt](./img/cpt-3.png)
+2. Masuk ke bagian "Desktop" dan pilih "IP configuration"
+    ![step2-cpt](./img/cpt-4.png) 
+3. Lakukan konfiugasi IP <br />
+    ![step3-cpt](./img/cpt-5.png)
+
+    Isi IPv4 Address sesuai dengan address yang telah ditetapkan, isi Subnet Masuk sesuai dengan tabel 16 yang sesuai dengan subnet namenya, serta isi Default Gateway dengan gateway dari IP address tersebut.
 
 ### D. Routing IP
+Agar setiap node dapat terhubung satu sama lain, kita perlu melakukan routing IP pada implementasi IP yang sudah kita lakukan sebelumnya.
+#### D.1. Routing IP VLSM di GNS3
+Untuk melakukan routing pada GNS3, kita harus melihat dari setiap subnet masing-masing dan routernya. Jika subnet tersebut langsung berhubungan dengan router melalui kabel yang sama, maka kita tidak perlu melakukan routing pada router tersebut.
+
+Sebagai contoh untuk subnet A2 yang memiliki NID 192.180.23.0
+![GNS3 Guide](./img/vlsm-gns3-guide.drawio.png)
+
+Subnet A2 tersebut berhubungan secara langsung dengan Router Denken, maka kita tidak perlu melakukan konfigurasi routing pada Denken. Tujuan routing adalah untuk menuju pusatnya, yaitu router Aura. Router Aura tidak berhubungan langsung dengan subnet A2, oleh karena itu kita perlu melakukan konfigurasi routing subnet A2 di router Aura.
+
+Konfigurasi tersebut disimpan di dalam .bashrc, dengan format sebagai berikut:
+
+```
+route add -net [Network ID] netmask [Netmask] gw [Gateway]
+```
+
+Kita ingin menambahkan rute subnet A2 di dalam Router Aura, maka Network ID yang dimasukkan adalah subnet A2, yaitu `192.180.23.0`. Subnet A2 memiliki netmask 192.180.23.0 . Untuk gateway, dilihat dari kabel router Aura yang paling dekat dengan subnet A2, yaitu `Denken eth 0`, yang memiliki IP `192.180.24.114`
+
+Maka command untuk menambahkan subnet A2 di routing adalah:
+
+```
+route add -net 192.180.23.0 netmask 255.255.255.0 gw 192.180.24.114
+```
+
+Lakukan hal yang sama untuk subnet lainnya. Berikut ini adalah routing yang saya lakukan:
+
+- Aura
+ ```
+ #A15
+route add -net 192.180.24.124 netmask 255.255.255.252 gw 192.180.24.122
+
+#A19
+route add -net 192.180.24.132 netmask 255.255.255.252 gw 192.180.24.122
+
+#A20
+route add -net 192.180.0.0 netmask 255.255.248.0 gw 192.180.24.122
+
+#A18
+route add -net 192.180.8.0 netmask 255.255.252.0 gw 192.180.24.122
+
+#A17
+route add -net 192.180.24.96 netmask 255.255.255.248 gw 192.180.24.122
+
+#A21
+route add -net 192.180.24.64 netmask 255.255.255.224 gw 192.180.24.122
+
+#A2
+route add -net 192.180.23.0 netmask 255.255.255.0 gw 192.180.24.114
+
+#A13
+route add -net 192.180.24.104 netmask 255.255.255.248 gw 192.180.24.138
+
+#A4
+route add -net 192.180.24.140 netmask 255.255.255.252 gw 192.180.24.138
+
+#A6
+route add -net 192.180.12.0 netmask 255.255.252.0 gw 192.180.24.138
+
+#A7
+route add -net 192.180.22.0 netmask 255.255.255.0 gw 192.180.24.138
+
+#A9
+route add -net 192.180.20.0 netmask 255.255.254.0 gw 192.180.24.138
+
+#A11
+route add -net 192.180.24.0 netmask 255.255.255.192 gw 192.180.24.138
+
+#A12
+route add -net 192.180.16.0 netmask 255.255.252.0 gw 192.180.24.138
+ ```
+
+- Eisen
+ ```
+#A6
+route add -net 192.180.12.0 netmask 255.255.252.0 gw 192.180.24.146
+
+#A7
+route add -net 192.180.22.0 netmask 255.255.255.0 gw 192.180.24.146
+
+#A9
+route add -net 192.180.20.0 netmask 255.255.254.0 gw 192.180.24.150
+
+#A11
+route add -net 192.180.24.0 netmask 255.255.255.192 gw 192.180.24.150
+
+#A12
+route add -net 192.180.16.0 netmask 255.255.252.0 gw 192.180.24.150
+ ```
+- Flamme
+ ```
+#A20
+route add -net 192.180.0.0 netmask 255.255.248.0 gw 192.180.24.134
+
+#A17
+route add -net 192.180.24.96 netmask 255.255.255.248 gw 192.180.24.130
+ ```
+- Frieren
+ ```
+#A19
+route add -net 192.180.24.132 netmask 255.255.255.252 gw 192.180.24.126
+
+#A20
+route add -net 192.180.0.0 netmask 255.255.248.0 gw 192.180.24.126
+
+#A18
+route add -net 192.180.8.0 netmask 255.255.252.0 gw 192.180.24.126
+
+#A17
+route add -net 192.180.24.96 netmask 255.255.255.248 gw 192.180.24.126
+ ```
+- Lawine
+ ```
+#A12
+route add -net 192.180.16.0 netmask 255.255.252.0 gw 192.180.24.2
+ ```
+- Linie
+ ```
+#A11
+route add -net 192.180.24.0 netmask 255.255.255.192 gw 192.180.24.118
+
+#A12
+route add -net 192.180.16.0 netmask 255.255.252.0 gw 192.180.24.118
+ ```
+
+#### D.1.1. Testing VLSM di GNS3
+Berikut ini adalah beberapa testing yang dilakukan untuk mengecek routing berhasil atau tidak:
+- ping ke google.com
+    - PC
+    ![ping PC](./img/pingGoogle1.png)
+    - Server
+    ![ping Server](./img/pingGoogle2.png)
+    - Router
+    ![ping Router](./img/pingGoogle3.png)
+- ping PC/Server ke PC/Server terdekat <br />
+    PC RiegelCanyon ke Server Sein 
+    ![ping PC near](./img/pingPCnear.png)
+- ping PC/Server ke PC/Server jauh <br />
+    PC GranzChannel ke Server Sein
+    ![ping PC far](./img/pingPCFar.png)
+- ping router ke router terdekat <br />
+    Router Denken ke Router Aura
+    ![ping Router near](./img/pingRouterNear.png)
+- ping router ke router jauh <br />
+    Router Denken ke Router Flamme
+    ![ping Router far](./img/pingRouterFar.png)
+- ping PC/Server ke router terdekat <br />
+    PC LaubHills ke Router Fern
+    ![ping cross near](./img/pingCrossNear.png)
+- ping PC/Server ke router jauh <br />
+    PC BredtRegion ke Router Denken
+    ![ping cross far](./img/pingCrossFar.png)
+
+#### D.2. Routing IP CIDR di Cisco Packet Tracer
+Untuk melakukan routing IP CIDR di Cisco Packet Tracer, gunakan konsep routing yang sama seperti pada routing VLSM di GNS3. 
+
+Konfigurasi di dalam Cisco Packet Tracer dilakukan dengan langkah sebagai berikut:
+1. Pilih node yang ingin dilakukan konfigurasi dan masuk ke bagian "Config"
+![step 1](./img/CIDRstep1.png)
+2. Pilih "ROUTING" dan pilih "Static", kemudian lengkapi rute <br />
+Isi "Network" dengan NID subnet, "Mask" dengan subnet mask pada subnet, dan "Next Hop" interface yang sesuai dengan langkah selanjutnya.
+3. Klik Add
+
+Sebagai contoh, pada subnet A2 yang memiliki NID `192.180.64.0`
+![CIDR Guide](./img/CIDR-CPT-guide.drawio.png)
+
+Subnet A2 perlu ditambahkan rute di dalam Router Aura (seperti penjelasan pada VLSM), maka dari itu Network yang kita masukkan adalah `192.180.64.0`, dan Mask diperoleh dari subnet A2 yaitu `192.180.23.0`. Untuk next hop, Router Aura memiliki interface terdekat ke subnet A2 pada Fa 0/1, sehingga pada next hop diisi dengan IP Fa 0/1 dari Route Aura `192.180.65.2`.
+
+Adapun perbedaan tambahan routing pada Cisco Packet Tracer dibanding dengan GNS3. Pada Cisco Packet Tracer, kita juga perlu untuk menambahkan route `0.0.0.0` dengan mask `0.0.0.0`. Route tersebut diperlukan agar setiap subnet dapat melakukan ping ke pusatnya (Aura). Untuk next hop, diisi dengan interface terdekat dari router subnet tersebut yang memiliki arah ke Aura.
+
+Misalnya, pada router Himmel, router terdekat dari Himmel yang menuju Aura adalah router Flamme. Maka dari itu untuk next hop diisi dengan interface Flame 1/0, yaitu `192.182.32.9`.
+
+Berikut ini adalah konfigurasi routing yang saya lakukan:
+- Aura
+```
+Router(config)#ip route 192.180.128.0 255.255.255.224 192.180.128.34
+Router(config)#ip route 192.182.64.0 255.255.255.252 192.180.128.34
+Router(config)#ip route 192.182.8.0 255.255.255.252 192.180.128.34
+Router(config)#ip route 192.182.0.0 255.255.248.0 192.180.128.34
+Router(config)#ip route 192.182.16.0 255.255.252.0 192.180.128.34
+Router(config)#ip route 192.182.32.8 255.255.255.252 192.180.128.34
+Router(config)#ip route 192.182.32.0 255.255.255.248 192.180.128.34
+Router(config)#ip route 192.180.64.0 255.255.255.0 192.180.65.2
+Router(config)#ip route 192.180.16.0 255.255.255.252 192.180.32.2
+Router(config)#ip route 192.180.8.0 255.255.255.252 192.180.32.2
+Router(config)#ip route 192.180.0.0 255.255.252.0 192.180.32.2
+Router(config)#ip route 192.180.4.0 255.255.255.0 192.180.32.2
+Router(config)#ip route 192.181.64.0 255.255.255.248 192.180.32.2
+Router(config)#ip route 192.181.32.0 255.255.255.252 192.180.32.2
+Router(config)#ip route 192.181.16.0 255.255.254.0 192.180.32.2
+Router(config)#ip route 192.181.8.0 255.255.255.252 192.180.32.2
+Router(config)#ip route 192.181.4.0 255.255.255.192 192.180.32.2
+Router(config)#ip route 192.181.0.0 255.255.252.0 192.180.32.2
+```
+- Denken
+```
+Router(config)#ip route 0.0.0.0 0.0.0.0 192.180.65.1
+```
+- Eisen
+```
+Router(config)#ip route 0.0.0.0 0.0.0.0 192.180.32.1
+Router(config)#ip route 192.180.0.0 255.255.252.0 192.180.8.2
+Router(config)#ip route 192.180.4.0 255.255.255.0 192.180.8.2
+Router(config)#ip route 192.181.16.0 255.255.254.0 192.181.32.2
+Router(config)#ip route 192.181.8.0 255.255.255.252 192.181.32.2
+Router(config)#ip route 192.181.4.0 255.255.255.192 192.181.32.2
+Router(config)#ip route 192.181.0.0 255.255.252.0 192.181.32.2
+```
+- Fern
+```
+Router(config)#ip route 0.0.0.0 0.0.0.0 192.182.8.1
+```
+- Flamme
+```
+Router(config)#ip route 0.0.0.0 0.0.0.0 192.182.64.1
+Router(config)#ip route 192.182.0.0 255.255.248.0 192.182.8.2
+Router(config)#ip route 192.182.32.0 255.255.255.248 192.182.32.10
+```
+- Frieren
+```
+Router(config)#ip route 0.0.0.0 0.0.0.0 192.180.128.33
+Router(config)#ip route 192.182.0.0 255.255.248.0 192.182.64.2
+Router(config)#ip route 192.182.8.0 255.255.255.252 192.182.64.2
+Router(config)#ip route 192.182.16.0 255.255.252.0 192.182.64.2
+Router(config)#ip route 192.182.32.8 255.255.255.252 192.182.64.2
+Router(config)#ip route 192.182.32.0 255.255.255.248 192.182.64.2
+```
+- Heiter
+```
+Router(config)#ip route 0.0.0.0 0.0.0.0 192.181.4.1
+```
+- Himmel
+```
+Router(config)#ip route 0.0.0.0 0.0.0.0 192.182.32.9
+```
+- Lawine
+```
+Router(config)#ip route 0.0.0.0 0.0.0.0 192.181.8.1
+Router(config)#ip route 192.181.0.0 255.255.252.0 192.181.4.2
+```
+- Linie
+```
+Router(config)#ip route 0.0.0.0 0.0.0.0 192.181.32.1
+Router(config)#ip route 192.181.4.0 255.255.255.192 192.181.8.2
+Router(config)#ip route 192.181.0.0 255.255.252.0 192.181.8.2
+```
+- Lugner
+```
+Router(config)#ip route 0.0.0.0 0.0.0.0 192.180.8.1
+```
+##### D.2.1. Testing CIDR di Cisco Packet Tracer
+Berikut ini adalah beberapa testing yang dilakukan untuk mengecek routing berhasil atau tidak:
+- ping PC/Server ke PC/Server terdekat <br />
+    Sever Sein ke PC RiegelCanyon
+  ![ping pc near](./img/pingCIDRpcNear.png)
+
+- ping PC/Server ke PC/Server jauh  <br />
+   PC RiegelCanyon ke PC GranzChannel
+    ![ping PC far](./img/pingCIDRpcFar.png)
+
+- ping router ke router terdekat  <br />
+    Router Aura ke Router Denken
+    ![ping router near](./img/pingCIDRrouterNear.png)
+
+- ping router ke router jauh  <br />
+    Router Fern ke Router Lugner
+    ![ping Router Far](./img/pingCIDRrouterFar.png)
+- ping PC/Server ke router terdekat  <br />
+    PC RoyalCapital ke Router Denken
+    ![ping cross near](./img/pingCIDRcrossNear.png)
+- ping PC/Server ke router jauh  <br />
+    PC LaubHills ke Router Lugner
+    ![ping cross far](./img/pingCIDRcrossFar.png)
