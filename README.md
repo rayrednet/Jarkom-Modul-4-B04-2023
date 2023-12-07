@@ -1047,29 +1047,29 @@ route add -net 192.180.16.0 netmask 255.255.252.0 gw 192.180.24.118
 #### D.1.1. Testing VLSM di GNS3
 Berikut ini adalah beberapa testing yang dilakukan untuk mengecek routing berhasil atau tidak:
 - ping ke google.com
-    - PC
+    - PC <br />
     ![ping PC](./img/pingGoogle1.png)
-    - Server
+    - Server <br />
     ![ping Server](./img/pingGoogle2.png)
-    - Router
+    - Router <br />
     ![ping Router](./img/pingGoogle3.png)
 - ping PC/Server ke PC/Server terdekat <br />
-    PC RiegelCanyon ke Server Sein 
+    PC RiegelCanyon ke Server Sein  <br />
     ![ping PC near](./img/pingPCnear.png)
 - ping PC/Server ke PC/Server jauh <br />
-    PC GranzChannel ke Server Sein
+    PC GranzChannel ke Server Sein <br />
     ![ping PC far](./img/pingPCFar.png)
 - ping router ke router terdekat <br />
-    Router Denken ke Router Aura
+    Router Denken ke Router Aura <br />
     ![ping Router near](./img/pingRouterNear.png)
 - ping router ke router jauh <br />
-    Router Denken ke Router Flamme
+    Router Denken ke Router Flamme <br />
     ![ping Router far](./img/pingRouterFar.png)
 - ping PC/Server ke router terdekat <br />
-    PC LaubHills ke Router Fern
+    PC LaubHills ke Router Fern <br />
     ![ping cross near](./img/pingCrossNear.png)
 - ping PC/Server ke router jauh <br />
-    PC BredtRegion ke Router Denken
+    PC BredtRegion ke Router Denken <br />
     ![ping cross far](./img/pingCrossFar.png)
 
 #### D.2. Routing IP CIDR di Cisco Packet Tracer
