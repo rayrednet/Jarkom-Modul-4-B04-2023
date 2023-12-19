@@ -936,7 +936,7 @@ Konfigurasi tersebut disimpan di dalam .bashrc, dengan format sebagai berikut:
 route add -net [Network ID] netmask [Netmask] gw [Gateway]
 ```
 
-Kita ingin menambahkan rute subnet A2 di dalam Router Aura, maka Network ID yang dimasukkan adalah subnet A2, yaitu `192.180.23.0`. Subnet A2 memiliki netmask 192.180.23.0 . Untuk gateway, dilihat dari kabel router Aura yang paling dekat dengan subnet A2, yaitu `Denken eth 0`, yang memiliki IP `192.180.24.114`
+Kita ingin menambahkan rute subnet A2 di dalam Router Aura, maka Network ID yang dimasukkan adalah subnet A2, yaitu `192.180.23.0`. Subnet A2 memiliki netmask `255.255.255.0` . Untuk gateway, dilihat dari kabel router Aura yang paling dekat dengan subnet A2, yaitu `Denken eth 0`, yang memiliki IP `192.180.24.114`
 
 Maka command untuk menambahkan subnet A2 di routing adalah:
 
